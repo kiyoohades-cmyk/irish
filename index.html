@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Can You Be Mine?</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Courier New', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Card container na may pink border at anino */
+        .container {
+            background-color: #ffffff;
+            border: 5px solid #ff7495; 
+            border-radius: 40px;
+            padding: 60px 30px;
+            max-width: 360px;
+            width: 85%;
+            aspect-ratio: 1 / 1.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(255, 116, 149, 0.2);
+            z-index: 10;
+        }
+
+        h1 {
+            color: #4da6ff; 
+            font-size: 32px;
+            font-weight: bold;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            white-space: pre-line;
+        }
+
+        .buttons-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        /* Ginawang BOLD (6px) ang gitnang guhit */
+        .divider {
+            width: 6px;
+            height: 80px;
+            background-color: #ff7495;
+            margin: 0 15px;
+            border-radius: 10px;
+        }
+
+        .btn-zone {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+            position: relative;
+        }
+
+        button {
+            background: none;
+            border: none;
+            font-size: 32px;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            padding: 10px;
+            transition: transform 0.1s ease;
+        }
+
+        #yesBtn {
+            color: #ff7495;
+        }
+
+        #noBtn {
+            color: #4da6ff;
+            position: absolute;
+            z-index: 100;
+        }
+
+        /* Success text animation para kay Irish */
+        .success-text {
+            font-size: 28px;
+            color: #ff7495;
+            font-weight: bold;
+            line-height: 1.5;
+            animation: popIn 0.5s ease-out forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Floating Hearts Disenyo */
+        .heart {
+            position: absolute;
+            color: #ff7495;
+            font-size: 24px;
+            animation: floatUp 3s linear forwards;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 id="heading">Can you Be<br>Mine</h1>
+        
+        <div class="buttons-wrapper" id="btnWrapper">
+            <div class="btn-zone">
+                <button id="yesBtn" onclick="celebrate()">yes</button>
+            </div>
+            
+            <div class="divider" id="line"></div>
+            
+            <div class="btn-zone" id="noZone">
+                <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const container = document.querySelector('.container');
+            
+            const padding = 50;
+            const maxX = container.clientWidth - noBtn.clientWidth - padding;
+            const maxY = container.clientHeight - noBtn.clientHeight - padding;
+            
+            const randomX = Math.floor(Math.random() * (maxX - padding)) + padding/2;
+            const randomY = Math.floor(Math.random() * (maxY - padding)) + padding/2;
+            
+            document.body.appendChild(noBtn);
+            noBtn.style.position = 'fixed';
+            
+            const rect = container.getBoundingClientRect();
+            noBtn.style.left = (rect.left + randomX) + 'px';
+            noBtn.style.top = (rect.top + randomY) + 'px';
+        }
+
+        function celebrate() {
+            const heading = document.getElementById('heading');
+            const btnWrapper = document.getElementById('btnWrapper');
+            const noBtn = document.getElementById('noBtn');
+
+            if(noBtn) noBtn.remove();
+            btnWrapper.style.display = 'none';
+            
+            // Ang bagong sweet message para kay Irish
+            heading.innerHTML = "yeheyyy 🥳<br>thank you and<br>iloveyou irishhhhh";
+            heading.className = "success-text";
+
+            // Magpapakawala ng mga lumulutang na puso sa screen
+            for (let i = 0; i < 30; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = Math.random() > 0.5 ? '❤️' : '💖';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => { heart.remove(); }, 4000);
+        }
+    </script>
+</body>
+</html>
